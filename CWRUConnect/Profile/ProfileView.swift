@@ -11,14 +11,20 @@ struct ProfileView: View {
     @Binding var userProfile: Friend  // likely to change later.
     var body: some View {
         NavigationStack {
-            FriendLargeView(friend: $userProfile)
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        NavigationLink(destination: EditProfileView(userProfile: $userProfile)) {
-                            Text("Edit Profile")
-                        }
-                    }
+            VStack {
+                Image(userProfile.image!)
+                    .resizable()
+                Text(userProfile.name)
+                Text(userProfile.headline)
+                Text(userProfile.bio)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                NavigationLink(destination: EditProfileView(userProfile: $userProfile)) {
+                    Text("Edit Profile")
                 }
+            }
         }
     }
 }

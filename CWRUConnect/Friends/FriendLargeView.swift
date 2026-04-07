@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct FriendLargeView: View {
-    @Binding var friend: Friend
+    @State var friend: User
     var body: some View {
         VStack {
-            FriendSmallView(friend: $friend)
+            FriendSmallView(friend: friend)
                 .padding()
             Spacer()
-            Text(friend.bio)
+            Text(friend.minibio)
                 .padding()
             Spacer()
         }
@@ -22,7 +22,7 @@ struct FriendLargeView: View {
 }
 
 #Preview {
-    FriendLargeView(
-        friend: .constant(Friend(name: "Alan S.", email: "ams2299@case.edu", headline: "Computer Science", bio: "Hey! My name is Alan Slice! I'm originally from Maine, but spent most of my upbringing in the DMV area (Vienna, VA for the curious!). My hobbies include eating/making/talking about pizza, playing ukulele, and haunting people. HAHAHA! I am going to haunt you forever!", image: "cat"))
-    )
+//    FriendLargeView(
+//        friend: .constant(Friend(name: "Alan S.", email: "ams2299@case.edu", headline: "Computer Science", bio: "Hey! My name is Alan Slice! I'm originally from Maine, but spent most of my upbringing in the DMV area (Vienna, VA for the curious!). My hobbies include eating/making/talking about pizza, playing ukulele, and haunting people. HAHAHA! I am going to haunt you forever!", image: "cat"))
+//    )
 }

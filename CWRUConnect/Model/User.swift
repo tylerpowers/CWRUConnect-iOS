@@ -11,18 +11,21 @@ struct Users: Codable {
     var users: [User]
 }
 
-struct User: Codable {
-    var name: String?
-    var nickname: String?
-    var email: String?
-    var pronouns: String?
-    var pronunciation: String?
-    var gradYear: Int?
-    var hometown: String?
-    var nationality: String?
-    var primaryMajorID: Int?
-    var secondaryMajorID: Int?
-    var image: String?
-    var biography: String?
-    var fact: String?
+struct User: Codable, Hashable {
+    var userid: Int
+    var name: String
+    var nickname: String
+    var caseid: String
+    var pronouns: String
+    var graduation_year: Int
+    var hometown: String
+    var nationality: String
+    var image_link: String
+    var pronunciation: String
+    var minibio: String
+    var fact: String
+    var is_public_leaderboard: Bool
+    var note: String
+    var starred: Bool
+    var matched_at: String
 }

@@ -8,21 +8,22 @@
 import SwiftUI
 
 struct FriendSmallView: View {
-    @Binding var friend: Friend
+    @State var friend: User
     var body: some View {
         HStack {
-            if let friend_img = friend.image {
-                Image(friend_img)
-                    .resizable()
-                    .clipShape(Circle())
-                    .frame(width: 100, height: 100)
-                    .padding()
-            }
+//            if let friend_img = friend.image_link {
+//                Image(friend_img)
+//                    .resizable()
+//                    .clipShape(Circle())
+//                    .frame(width: 100, height: 100)
+//                    .padding()
+//            }
+            Image(systemName: "person")
             Spacer()
             VStack {
-                Text(friend.name)
+                Text(friend.nickname)
                     .font(.title)
-                Text(friend.headline)
+                Text(friend.minibio)
             }
         }
         .padding()
@@ -30,7 +31,7 @@ struct FriendSmallView: View {
 }
 
 #Preview {
-    FriendSmallView(
-        friend: .constant(Friend(name: "Alan S.", email: "ams2299@case.edu", headline: "Computer Science", bio: "", image: "cat"))
-    )
+//    FriendSmallView(
+//        friend: .constant(Friend(name: "Alan S.", email: "ams2299@case.edu", headline: "Computer Science", bio: "", image: "cat"))
+//    )
 }

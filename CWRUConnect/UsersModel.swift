@@ -7,25 +7,25 @@
 
 import Foundation
 
-private let urlString = "https://cwruconnect-api-production.up.railway.app/"
+private let urlString = "https://7hsxg16oej.execute-api.us-east-2.amazonaws.com/get_connections/2"
 
 @Observable
-class RailwayModel {
-    var users: Users?
+class UsersModel {
+    var users: [User]?
     
     func refresh() async {
         self.users = await getUsers()
     }
     
-    func getUsers() async -> Users? {
+    func getUsers() async -> [User]? {
         let session = URLSession(configuration: .default)
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)
             do {
                 let (data, _) = try await session.data(for: request)
                 let decoder = JSONDecoder()
-                let locations = try decoder.decode(Users.self, from: data)
-                return locations
+                let users = try decoder.decode([User].self, from: data)
+                return users
             }
             catch {
                 print("Error: \(error)")
@@ -33,5 +33,4 @@ class RailwayModel {
         }
         return nil
     }
-    
 }

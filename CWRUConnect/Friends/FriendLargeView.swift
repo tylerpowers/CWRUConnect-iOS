@@ -17,6 +17,7 @@ struct FriendLargeView: View {
                 ProgressView()
             }
             .frame(width: 200, height: 200)
+            .clipShape(RoundedRectangle(cornerRadius: 25))
             Text(friend.nickname)
                 .font(.largeTitle)
             Text(friend.pronunciation)

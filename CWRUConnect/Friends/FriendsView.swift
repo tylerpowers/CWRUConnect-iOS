@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FriendsView: View {
     @State var fetching: Bool = false
-    private let usersModel = UsersModel()
+    let usersModel = UsersModel()
     
     func loadFriends() {
         fetching = true
@@ -20,33 +20,44 @@ struct FriendsView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            if fetching {
-                ProgressView()
-            }
-            else {
-                if let friendList = usersModel.users {
-                    NavigationStack {
-                        List(friendList, id: \.self) { friend in
+        if fetching {
+            ProgressView()
+        }
+        else {
+            if let friendList = usersModel.users {
+                NavigationStack {
+                    List(friendList, id: \.self) { friend in
+                        NavigationLink {
+                            FriendLargeView(friend: friend)
+                        } label: {
+                            FriendSmallView(friend: friend)
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
                             NavigationLink {
-                                FriendLargeView(friend: friend)
+                                AddConnectionView(usersModel: usersModel)
                             } label: {
-                                FriendSmallView(friend: friend)
+                                Image(systemName: "plus")
                             }
+                        }
+                        ToolbarItem(placement: .confirmationAction) {
+                            Text("Edit")
+                                .padding()
                         }
                     }
                 }
-                else {
-                    ContentUnavailableView("Sorry, we couldn't fetch friends.", systemImage: "mappin.slash.circle")
-                        .onAppear() {
-                            loadFriends()
-                        }
-                }
+            }
+            else {
+                ContentUnavailableView("Sorry, we couldn't fetch friends.", systemImage: "mappin.slash.circle")
+                    .onAppear() {
+                        loadFriends()
+                    }
             }
         }
     }
 }
 
-#Preview {
-    FriendsView()
-}
+//#Preview {
+//    FriendsView()
+//}

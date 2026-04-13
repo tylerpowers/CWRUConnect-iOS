@@ -51,6 +51,10 @@ struct FriendSmallView: View {
                 }
             }
             Spacer()
+            if let starred = friend.starred {
+                Image(systemName: starred ? "star.fill" : "star")
+                    .foregroundStyle(.yellow)
+            }
         }
     }
 }

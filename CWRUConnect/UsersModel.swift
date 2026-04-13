@@ -35,7 +35,7 @@ class UsersModel {
         return nil
     }
     
-    func addConnection(newID: Int) async -> Void {
+    func addConnection(newid: Int) async -> Void {
         let userid = UserDefaults.standard.integer(forKey: "userid")
         guard let url = URL(string: "\(urlString)add_connection") else { return }
         
@@ -45,7 +45,7 @@ class UsersModel {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
-        let body = Connection(userid: userid, targetid: newID)
+        let body = Connection(userid: userid, targetid: newid)
         
         do {
             request.httpBody = try JSONEncoder().encode(body)
@@ -76,6 +76,104 @@ class UsersModel {
             
             do {
                 let decoded = try JSONDecoder().decode(ConnectionResponse.self, from: data)
+                print("Success: \(decoded)")
+            } catch {
+                print("Failure: \(error)")
+            }
+            
+        }.resume()
+    }
+    
+    func star(newid: Int) async -> Void {
+        let userid = UserDefaults.standard.integer(forKey: "userid")
+        guard let url = URL(string: "\(urlString)toggle_star") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let body = ConnectionToRemove(userid: userid, friendid: newid)
+        
+        do {
+            request.httpBody = try JSONEncoder().encode(body)
+        } catch {
+            print("Body encoding error: \(error)")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("DataTask error: \(error)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Status: \(httpResponse.statusCode)")
+            }
+            
+            guard let data = data else {
+                print("Error: no data")
+                return
+            }
+            
+            if data.isEmpty {
+                print("Error: empty data")
+                return
+            }
+            
+            do {
+                let decoded = try JSONDecoder().decode(ConnectionToRemoveResponse.self, from: data)
+                print("Success: \(decoded)")
+            } catch {
+                print("Failure: \(error)")
+            }
+            
+        }.resume()
+    }
+    
+    func removeConnection(newid: Int) async -> Void {
+        let userid = UserDefaults.standard.integer(forKey: "userid")
+        guard let url = URL(string: "\(urlString)remove_connection") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let body = ConnectionToRemove(userid: userid, friendid: newid)
+        print(body)
+        do {
+            request.httpBody = try JSONEncoder().encode(body)
+        } catch {
+            print("Body encoding error: \(error)")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("DataTask error: \(error)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Status: \(httpResponse.statusCode)")
+            }
+            
+            guard let data = data else {
+                print("Error: no data")
+                return
+            }
+            
+            if data.isEmpty {
+                print("Error: empty data")
+                return
+            }
+            
+            do {
+                let decoded = try JSONDecoder().decode(ConnectionToRemoveResponse.self, from: data)
                 print("Success: \(decoded)")
             } catch {
                 print("Failure: \(error)")

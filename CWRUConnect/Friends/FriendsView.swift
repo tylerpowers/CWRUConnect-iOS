@@ -28,12 +28,10 @@ struct FriendsView: View {
                 NavigationStack {
                     List(friendList, id: \.self) { friend in
                         NavigationLink {
-                            FriendLargeView(friend: friend)
+                            FriendLargeView(friend: friend, usersModel: usersModel)
                         } label: {
                             FriendSmallView(friend: friend)
-//                                .onDelete { usersModel.removeConnection(friend.userid) }
                         }
-                        
                     }
                     .refreshable {
                         loadFriends()
@@ -45,9 +43,6 @@ struct FriendsView: View {
                             } label: {
                                 Image(systemName: "plus")
                             }
-                        }
-                        ToolbarItem(placement: .primaryAction) {
-                            EditButton()
                         }
                     }
                 }

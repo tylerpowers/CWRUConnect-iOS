@@ -10,25 +10,24 @@ import SwiftUI
 
 
 struct AddConnectionView: View {
+    @Environment(\.dismiss) private var dismiss
     @State var newConnection: String = ""
     var usersModel: UsersModel
     
-    func initiateConnection() -> Bool {
+    func initiateConnection() {
         Task {
-            await usersModel.addConnection(newID: Int(newConnection)!)
+            await usersModel.addConnection(newid: Int(newConnection)!)
             newConnection = ""
             await usersModel.refresh()
-            // dismiss
-            return true
+            dismiss()
         }
-        return false
     }
     
     var body: some View {
         Text("Enter user ID")
             .padding()
         TextField("ID", text: $newConnection)
-//            .keyboardType(.numberPad)
+            .keyboardType(.numberPad)
             .padding()
         Button("Submit") {
             initiateConnection()

@@ -31,7 +31,12 @@ struct FriendsView: View {
                             FriendLargeView(friend: friend)
                         } label: {
                             FriendSmallView(friend: friend)
+//                                .onDelete { usersModel.removeConnection(friend.userid) }
                         }
+                        
+                    }
+                    .refreshable {
+                        loadFriends()
                     }
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -41,9 +46,8 @@ struct FriendsView: View {
                                 Image(systemName: "plus")
                             }
                         }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Text("Edit")
-                                .padding()
+                        ToolbarItem(placement: .primaryAction) {
+                            EditButton()
                         }
                     }
                 }

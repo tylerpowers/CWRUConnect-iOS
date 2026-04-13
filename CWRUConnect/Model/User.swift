@@ -26,3 +26,20 @@ struct User: Codable {
     var study_points_all_time: Int?
     var created_at: Date?
 }
+
+struct UserChangeRequest: Codable {
+    var userid: Int
+    var name: String
+    var nickname: String
+    var pronouns: String
+    var hometown: String
+    var nationality: String
+    var pronunciation: String
+    var minibio: String
+    var fact: String
+    var is_public_leaderboard: Bool
+}
+
+struct UserChangeResponse: Codable {
+    var success: Bool?
+}

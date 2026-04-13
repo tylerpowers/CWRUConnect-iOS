@@ -26,31 +26,43 @@ struct ProfileView: View {
             }
             else {
                 if let profile = profileModel.profile {
-                    VStack {
-                        PFPView(image_link: profile.image_link)
-                        Text(profile.nickname)
-                            .font(.largeTitle)
-                        Text(profile.name)
-                        Text("\(profile.caseid)@case.edu")
-                        Text("Pronunciation: \(profile.pronunciation ?? "no pronunciation set.")")
-                            .font(.caption)
-                            .italic()
-                        Text(profile.minibio ?? "")
-                        Text("Your fun fact: \(profile.fact ?? "no fun fact set.")")
-                        HStack {
-                            Text(profile.pronouns ?? "")
-                            Spacer()
-                            Text("MAJOR")
-                            Spacer()
-                            Text(profile.graduation_year?.description ?? "")
+                    NavigationStack {
+                        VStack {
+                            PFPView(image_link: profile.image_link)
+                            Text(profile.nickname)
+                                .font(.largeTitle)
+                            Text(profile.name)
+                            Text("\(profile.caseid)@case.edu")
+                            Text("Pronunciation: \(profile.pronunciation ?? "no pronunciation set.")")
+                                .font(.caption)
+                                .italic()
+                            Text(profile.minibio ?? "")
+                            Text("Your fun fact: \(profile.fact ?? "no fun fact set.")")
+                            HStack {
+                                Text(profile.pronouns ?? "")
+                                Spacer()
+                                Text("MAJOR")
+                                Spacer()
+                                Text(profile.graduation_year?.description ?? "")
+                            }
+                            .padding()
+                            HStack {
+                                Text(profile.hometown ?? "")
+                                Spacer()
+                                Text(profile.nationality ?? "")
+                            }
+                            .padding()
                         }
-                        .padding()
-                        HStack {
-                            Text(profile.hometown ?? "")
-                            Spacer()
-                            Text(profile.nationality ?? "")
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink("Edit") {
+                                EditProfileView(profileModel: profileModel)
+                                    .onDisappear {
+                                        reloadProfile()
+                                    }
+                            }
                         }
-                        .padding()
                     }
                 }
                 else {

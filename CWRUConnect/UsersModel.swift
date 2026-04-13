@@ -94,7 +94,7 @@ class UsersModel {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
-        let body = ConnectionToRemove(userid: userid, friendid: newid)
+        let body = StarRequest(userid: userid, friendid: newid)
         
         do {
             request.httpBody = try JSONEncoder().encode(body)
@@ -124,7 +124,7 @@ class UsersModel {
             }
             
             do {
-                let decoded = try JSONDecoder().decode(ConnectionToRemoveResponse.self, from: data)
+                let decoded = try JSONDecoder().decode(StarRequestResponse.self, from: data)
                 print("Success: \(decoded)")
             } catch {
                 print("Failure: \(error)")
@@ -193,7 +193,6 @@ class ProfileModel {
     }
     
     func getUser() async -> User? {
-        print(UserDefaults.standard.integer(forKey: "userid"))
         let session = URLSession(configuration: .default)
         let userid = UserDefaults.standard.integer(forKey: "userid")
         if let url = URL(string: "\(urlString)get_user_stats/\(userid)") {
@@ -209,6 +208,53 @@ class ProfileModel {
             }
         }
         return nil
+    }
+    
+    func updateUser(user: UserChangeRequest) async -> Void {
+        guard let url = URL(string: "\(urlString)update_user") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        do {
+            print(user)
+            request.httpBody = try JSONEncoder().encode(user)
+        } catch {
+            print("Body encoding error: \(error)")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("DataTask error: \(error)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Status: \(httpResponse.statusCode)")
+            }
+            
+            guard let data = data else {
+                print("Error: no data")
+                return
+            }
+            
+            if data.isEmpty {
+                print("Error: empty data")
+                return
+            }
+            
+            do {
+                let decoded = try JSONDecoder().decode(UserChangeResponse.self, from: data)
+                print("Success: \(decoded)")
+            } catch {
+                print("Failure: \(error)")
+            }
+            
+        }.resume()
     }
     
 }

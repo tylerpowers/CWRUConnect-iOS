@@ -49,7 +49,8 @@ struct EditProfileView: View {
             TextField("Hometown", text: $changedUser.hometown)
             TextField("Nationality", text: $changedUser.nationality)
             TextField("Pronunciation", text: $changedUser.pronunciation)
-            TextField("Bio", text: $changedUser.minibio)
+            TextField("Bio", text: $changedUser.minibio, axis: .vertical)
+                .lineLimit(4, reservesSpace: true)
             TextField("Fact", text: $changedUser.fact)
             Toggle("Display on Public Leaderboard", isOn: $changedUser.is_public_leaderboard)
             Button("Save Changes") {

@@ -29,30 +29,95 @@ struct ProfileView: View {
                     NavigationStack {
                         VStack {
                             PFPView(image_link: profile.image_link)
-                            Text(profile.nickname)
-                                .font(.largeTitle)
                             Text(profile.name)
-                            Text("\(profile.caseid)@case.edu")
+                                .font(.largeTitle)
+                                .bold()
                             Text("Pronunciation: \(profile.pronunciation ?? "no pronunciation set.")")
                                 .font(.caption)
                                 .italic()
-                            Text(profile.minibio ?? "")
-                            Text("Your fun fact: \(profile.fact ?? "no fun fact set.")")
-                            HStack {
-                                Text(profile.pronouns ?? "")
-                                Spacer()
-                                Text("MAJOR")
-                                Spacer()
-                                Text(profile.graduation_year?.description ?? "")
+                            List {
+                                VStack {
+                                    HStack {
+                                        Text("About me:")
+                                            .foregroundStyle(.gray)
+                                            .font(.subheadline)
+                                            .italic()
+                                            .padding()
+                                        Spacer()
+                                    }
+                                    HStack {
+                                        Text(profile.minibio ?? "")
+                                            .lineLimit(4, reservesSpace: true)
+                                            .padding()
+                                        
+                                        Spacer()
+                                    }
+                                    Spacer()
+                                }
+                                .background(.gray.opacity(0.1))
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                                VStack {
+                                    HStack {
+                                        Text("Fun fact:")
+                                            .foregroundStyle(.gray)
+                                            .font(.subheadline)
+                                            .italic()
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    HStack {
+                                        Text(profile.fact ?? "no fun fact set.")
+                                            .padding()
+                                        Spacer()
+                                    }
+                                    Spacer()
+                                }
+                                .background(.accent.opacity(0.1))
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                                VStack {
+                                    HStack {
+                                        Text("Personal details:")
+                                            .foregroundStyle(.gray)
+                                            .font(.subheadline)
+                                            .italic()
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    HStack {
+                                        Text("Pronouns: \(profile.pronouns ?? "not set")")
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    HStack {
+                                        Text("Hometown: \(profile.hometown ?? "not set")")
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    HStack {
+                                        Text("Nationality: \(profile.nationality ?? "not set")")
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    HStack {
+                                        Text("Major: MAJOR")
+                                        Spacer()
+                                        Text("Grad. year: \(profile.graduation_year?.description ?? "not set")")
+                                    }
+                                    .padding()
+                                }
+                                .background(.gray.opacity(0.1))
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                                HStack {
+                                    Text("Email (not shared):")
+                                    Spacer()
+                                    Text("\(profile.caseid)@case.edu")
+                                        .foregroundStyle(.accent)
+                                }
                             }
-                            .padding()
-                            HStack {
-                                Text(profile.hometown ?? "")
-                                Spacer()
-                                Text(profile.nationality ?? "")
-                            }
-                            .padding()
+                            .listStyle(.plain)
+                            .listRowSeparator(.hidden)
                         }
+                        .padding()
                     }
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
@@ -68,6 +133,7 @@ struct ProfileView: View {
                 else {
                     ContentUnavailableView("Sorry, we couldn't fetch profile.", systemImage: "mappin.slash.circle")
                         .onAppear() {
+                            UserDefaults.standard.set(8, forKey: "userid")
                             reloadProfile()
                         }
                 }
@@ -77,6 +143,6 @@ struct ProfileView: View {
 }
 
 
-//#Preview {
-//    ProfileView()
-//}
+#Preview {
+    ProfileView()
+}

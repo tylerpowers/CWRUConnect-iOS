@@ -38,7 +38,7 @@ struct FriendSmallView: View {
             }
             VStack {
                 HStack {
-                    Text(friend.nickname)
+                    Text(friend.name)
                         .font(.title)
                     Spacer()
                 }

@@ -17,8 +17,7 @@ struct ContentView: View {
                 ProfileView()
             }
             Tab("Learn", systemImage: "inset.filled.topleft.rectangle.portrait") {
-                ContentUnavailableView("Coming Soon!", systemImage: "inset.filled.topleft.rectangle.portrait")
-            }
+                GameSelectionView()            }
         }
         .onAppear {
             UserDefaults.standard.set(8, forKey: "userid")

@@ -46,33 +46,94 @@ struct FriendLargeView: View {
                         .frame(width: 200, height: 200)
                 }
                 
-                Text(friend.nickname)
+                Text(friend.name)
                     .font(.largeTitle)
                 Text("Pronunciation: \(friend.pronunciation ?? friend.nickname)")
                     .font(.caption)
                     .italic()
-                Text(friend.minibio ?? "")
-                HStack {
-                    Text(friend.pronouns ?? "")
-                    Spacer()
-                    Text("MAJOR")
-                    Spacer()
-                    if let year = friend.graduation_year {
-                        Text(year.description)
+                List {
+                    VStack {
+                        HStack {
+                            Text("About \(friend.name):")
+                                .foregroundStyle(.gray)
+                                .font(.subheadline)
+                                .italic()
+                                .padding()
+                            Spacer()
+                        }
+                        HStack {
+                            Text(friend.minibio ?? "")
+                                .lineLimit(4, reservesSpace: true)
+                                .padding()
+                            
+                            Spacer()
+                        }
+                        Spacer()
                     }
-                    
+                    .background(.gray.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    VStack {
+                        HStack {
+                            Text("Fun fact:")
+                                .foregroundStyle(.gray)
+                                .font(.subheadline)
+                                .italic()
+                            Spacer()
+                        }
+                        .padding()
+                        HStack {
+                            Text(friend.fact ?? "no fun fact set.")
+                                .padding()
+                            Spacer()
+                        }
+                        Spacer()
+                    }
+                    .background(.accent.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    VStack {
+                        HStack {
+                            Text("Personal details:")
+                                .foregroundStyle(.gray)
+                                .font(.subheadline)
+                                .italic()
+                            Spacer()
+                        }
+                        .padding()
+                        HStack {
+                            Text("Pronouns: \(friend.pronouns ?? "not set")")
+                            Spacer()
+                        }
+                        .padding()
+                        HStack {
+                            Text("Hometown: \(friend.hometown ?? "not set")")
+                            Spacer()
+                        }
+                        .padding()
+                        HStack {
+                            Text("Nationality: \(friend.nationality ?? "not set")")
+                            Spacer()
+                        }
+                        .padding()
+                        HStack {
+                            Text("Major: MAJOR")
+                            Spacer()
+                            Text("Grad. year: \(friend.graduation_year?.description ?? "not set")")
+                        }
+                        .padding()
+                    }
+                    .background(.gray.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
-                .padding()
-                HStack {
-                    Text(friend.hometown ?? "")
-                    Spacer()
-                    Text(friend.nationality ?? "")
-                }
-                .padding()
                 Button("Remove Connection") {
                     removeFriend()
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(.red)
+                .foregroundStyle(.white)
+                .padding()
             }
+            .listStyle(.plain)
+            .listRowSeparator(.hidden)
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {

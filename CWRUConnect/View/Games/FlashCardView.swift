@@ -10,9 +10,12 @@ import SwiftUI
 struct FlashCardView: View {
     @Binding var cardNumber: Int
     @Binding var gameModel: GameModel
+    @Binding var score: Int
+    @Binding var path: NavigationPath
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
-    @State var answer_color = Color.blue
+    @State var answer_colors = [Color.blue, Color.blue, Color.blue, Color.blue]
     @State var correct_selected = false
+    @State var is_first_guess = true
     
     func isEnd() -> Bool {
         if gameModel.cardDeck?.count == cardNumber + 1 {
@@ -39,22 +42,24 @@ struct FlashCardView: View {
                     Spacer()
                     
                     LazyVGrid(columns: columns) {
-                        ForEach(deck[cardNumber].choices, id: \.self) { choice in
+                        ForEach(0..<deck[cardNumber].choices.count) { choice in
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)
                                     .frame(width: 180, height: 50)
-                                    .foregroundStyle(answer_color)
-                                Text(choice)
+                                    .foregroundStyle(answer_colors[choice])
+                                Text(deck[cardNumber].choices[choice])
                                     .foregroundStyle(.white)
                             }
                             .onTapGesture {
                                 withAnimation {
-                                    if choice == deck[cardNumber].name {
-                                        answer_color = Color.green
+                                    if deck[cardNumber].choices[choice] == deck[cardNumber].name {
+                                        answer_colors[choice] = Color.green
+                                        if is_first_guess { score = score + 1 }
                                         correct_selected = true
                                     }
                                     else {
-                                        answer_color = Color.red
+                                        answer_colors[choice] = Color.red
+                                        is_first_guess = false
                                     }
                                 }
                             }
@@ -64,12 +69,19 @@ struct FlashCardView: View {
                     
                     if correct_selected {
                         if !isEnd() {
-                            NavigationLink(destination: FlashCardView(cardNumber: .constant(cardNumber+1), gameModel: $gameModel)) {
-                                Text("Next >")
-                            }
+                            Text("Next >")
+                                .foregroundStyle(.blue)
+                                .padding()
+                                .onTapGesture {
+                                    cardNumber = cardNumber + 1
+                                    answer_colors = [Color.blue, Color.blue, Color.blue, Color.blue]
+                                    is_first_guess = true
+                                    correct_selected = false
+                                }
                         }
                         else {
-                            GameOverView()
+                            GameOverView(score: $score, gameModel: $gameModel, path: $path)
+                                .padding()
                         }
                     }
                 }

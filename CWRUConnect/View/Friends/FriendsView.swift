@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import CodeScanner
+internal import AVFoundation
 
 struct FriendsView: View {
     @State var fetching: Bool = false
+    @State var isScanning: Bool = false
     let usersModel = UsersModel()
     
     func loadFriends() {
@@ -16,6 +19,26 @@ struct FriendsView: View {
         Task {
             await usersModel.refresh()
             fetching = false
+        }
+    }
+    
+    func initiateConnection(_ newid: Int) {
+        Task {
+            await usersModel.addConnection(newid: newid)
+        }
+    }
+    
+    func handleScan(result: Result<ScanResult, ScanError>) {
+        isScanning = false
+        
+        switch result {
+        case .success(let result):
+            let details = result.string
+            print("Scanned: \(details)")
+            initiateConnection(Int(result.string)!)
+            loadFriends()
+        case .failure:
+            print("Scanning failed")
         }
     }
     
@@ -37,13 +60,19 @@ struct FriendsView: View {
                         loadFriends()
                     }
                     .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            NavigationLink {
-                                AddConnectionView(usersModel: usersModel)
-                            } label: {
-                                Image(systemName: "plus")
-                            }
+                        Button {
+                            isScanning = true
+//                            NavigationLink {
+//                                AddConnectionView(usersModel: usersModel)
+//                            } label: {
+//                                Image(systemName: "plus")
+//                            }
+                        } label: {
+                            Image(systemName: "plus")
                         }
+                    }
+                    .sheet(isPresented: $isScanning) {
+                        CodeScannerView(codeTypes: [.qr], simulatedData: "8", completion: handleScan)
                     }
                 }
             }

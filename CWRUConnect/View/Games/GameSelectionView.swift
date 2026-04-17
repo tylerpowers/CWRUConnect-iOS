@@ -9,14 +9,26 @@ import SwiftUI
 
 struct GameSelectionView: View {
     @State var cardNumber = 0
+    @State var flashScore = 0
     @State var gameModel = GameModel()
+    @State var path = NavigationPath()
     
     func refreshDeck() { Task { await gameModel.refresh() }}
     
     var body: some View {
-        NavigationStack {
-            NavigationLink(destination: FlashCardView(cardNumber: $cardNumber, gameModel: $gameModel)) {
-                Text("Flash Cards")
+        NavigationStack(path: $path) {
+            HStack {
+                Text("Learn")
+                    .font(.largeTitle)
+                Spacer()
+            }
+            .padding()
+            List {
+                NavigationLink(destination: FlashCardView(cardNumber: $cardNumber, gameModel: $gameModel, score: $flashScore, path: $path)) {
+                    Text("Flash Cards")
+                        .padding()
+                }
+                Text("Weekly Challenges")
             }
         }
         .onAppear {

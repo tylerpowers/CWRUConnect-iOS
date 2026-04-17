@@ -99,9 +99,10 @@ struct ProfileView: View {
                                     }
                                     .padding()
                                     HStack {
-                                        Text("Major: MAJOR")
-                                        Spacer()
+//                                        Text("Major: MAJOR")
+//                                        Spacer()
                                         Text("Grad. year: \(profile.graduation_year?.description ?? "not set")")
+                                        Spacer()
                                     }
                                     .padding()
                                 }

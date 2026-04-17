@@ -20,6 +20,7 @@ struct GameSelectionView: View {
             HStack {
                 Text("Learn")
                     .font(.largeTitle)
+                    .bold()
                 Spacer()
             }
             .padding()
@@ -28,7 +29,10 @@ struct GameSelectionView: View {
                     Text("Flash Cards")
                         .padding()
                 }
-                Text("Weekly Challenges")
+                NavigationLink(destination: RecommendationsView()) {
+                    Text("Weekly Recommendations")
+                        .padding()
+                }
             }
         }
         .onAppear {

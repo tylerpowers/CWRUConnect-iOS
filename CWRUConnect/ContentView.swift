@@ -10,14 +10,15 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
+            Tab("Learn", systemImage: "inset.filled.topleft.rectangle.portrait") {
+                GameSelectionView()
+            }
             Tab("Friends", systemImage: "figure.wave") {
                 FriendsView()
             }
             Tab("Profile", systemImage: "person.fill") {
                 ProfileView()
             }
-            Tab("Learn", systemImage: "inset.filled.topleft.rectangle.portrait") {
-                GameSelectionView()            }
         }
         .onAppear {
             UserDefaults.standard.set(8, forKey: "userid")

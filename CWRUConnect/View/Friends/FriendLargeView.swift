@@ -115,9 +115,10 @@ struct FriendLargeView: View {
                         }
                         .padding()
                         HStack {
-                            Text("Major: MAJOR")
-                            Spacer()
+//                            Text("Major: MAJOR")
+//                            Spacer()
                             Text("Grad. year: \(friend.graduation_year?.description ?? "not set")")
+                            Spacer()
                         }
                         .padding()
                     }
